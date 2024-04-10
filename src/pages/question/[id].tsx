@@ -21,7 +21,7 @@ export default function Question(props: PropsType) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
-        <form action='/api/answer'>
+        <form method="post" action="/api/answer">
           <input
             type="hidden"
             name="questionId"
