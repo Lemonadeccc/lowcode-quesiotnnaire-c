@@ -1,5 +1,6 @@
 import PageWrapper from "@/components/PageWrapper";
 import { getQuestionById } from "@/service/question";
+import { getComponent } from "@/components/QuestionComponents";
 import styles from "@/styles/Question.module.scss";
 
 type PropsType = {
@@ -16,9 +17,6 @@ type PropsType = {
   };
   msg?: string;
 };
-
-import QuestionInput from "@/components/QuestionComponents/QuestionInput";
-import QuestionRadio from "@/components/QuestionComponents/QuestionRadio";
 
 // pages/question/[id].tsx
 // http://localhost:3000/question/12353   C端H5的页面url规则
@@ -63,31 +61,25 @@ export default function Question(props: PropsType) {
   }
 
   //遍历组件
+  const ComponentListElem = (
+    <>
+      {componentList?.map((c) => {
+        const ComponentElem = getComponent(c);
+        return (
+          <div key={c.id} className={styles.componentWrapper}>
+            {ComponentElem}
+          </div>
+        );
+      })}
+    </>
+  );
 
   return (
     <PageWrapper title={title}>
       <form method="post" action="/api/answer">
         <input type="hidden" name="questionId" defaultValue={id}></input>
-        <div className={styles.componentWrapper}>
-          <QuestionInput
-            fe_id="c1"
-            props={{ title: "你的姓名", placeholder: "请输入姓名" }}
-          ></QuestionInput>
-        </div>
-        <div className={styles.componentWrapper}>
-          <QuestionRadio
-            fe_id="c2"
-            props={{
-              title: "你的性别",
-              options: [
-                { value: "male", text: "男" },
-                { value: "female", text: "女" },
-              ],
-              value: "",
-              isVertical: false,
-            }}
-          ></QuestionRadio>
-        </div>
+
+        {ComponentListElem}
 
         <div className={styles.submitBtnContainer}>
           {/* <input type="submit" value="提交" /> */}
